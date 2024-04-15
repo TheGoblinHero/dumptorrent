@@ -378,7 +378,7 @@ struct benc_entity *benc_parse_stream (FILE *stream, char *errbuf)
 				return NULL;
 			}
 
-			if (length > 1024 * 1024 || length < 0) {
+			if (length < 0) {
 				snprintf(errbuf, ERRBUF_SIZE, "string too long.");
 				return NULL;
 			}
