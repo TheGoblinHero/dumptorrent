@@ -41,8 +41,10 @@ static char *human_readable_number (long long int n)
 		sprintf(ptr, " (%.3gK)", n / 1024.0);
 	} else if (n < 1024 * 1024 * 1000) {
 		sprintf(ptr, " (%.3gM)", n / (1024.0 * 1024.0));
-	} else {
+	} else if (n < 1024 * 1024 * 1024 * 1000) {
 		sprintf(ptr, " (%.3gG)", n / (1024.0 * 1024.0 * 1024.0));
+	} else {
+		sprintf(ptr, " (%.3gT)", n / (1024.0 * 1024.0 * 1024.0 * 1024.0));
 	}
 	return buff;
 }
