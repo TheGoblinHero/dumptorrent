@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+#include <stdint.h>
 
 #include "common.h"
 #include "benc.h"
@@ -25,27 +26,20 @@ static char *option_field;
 int option_timeout = 0;
 char *option_tracker, *option_info_hash;
 
-static char *human_readable_number (long long int n)
+static char *human_readable_number (uint64_t n)
 {
-	static char buff[32];
-	char *ptr;
+	static char buff[51];
+	const char *suffix[] = {"B", "K", "M", "G", "T"};
+	int length = sizeof(suffix) / sizeof(suffix[0]);
+	double bytes = (double)n;
+	int i = 0;
 
-#ifdef _WIN32
-	ptr = buff + sprintf(buff, "%I64d", n);
-#else
-	ptr = buff + sprintf(buff, "%lld", n);
-#endif
-
-	if (n < 1000) {
-	} else if (n < 1024 * 1000) {
-		sprintf(ptr, " (%.3gK)", n / 1024.0);
-	} else if (n < 1024 * 1024 * 1000) {
-		sprintf(ptr, " (%.3gM)", n / (1024.0 * 1024.0));
-	} else if (n < 1024 * 1024 * 1024 * 1000) {
-		sprintf(ptr, " (%.3gG)", n / (1024.0 * 1024.0 * 1024.0));
-	} else {
-		sprintf(ptr, " (%.3gT)", n / (1024.0 * 1024.0 * 1024.0 * 1024.0));
+	while (bytes > 1024) {
+		bytes = bytes / 1024.0;
+      i++;
 	}
+
+	snprintf(buff, 50, "%llu (%.3g%s)", n, bytes, suffix[i]);
 	return buff;
 }
 
