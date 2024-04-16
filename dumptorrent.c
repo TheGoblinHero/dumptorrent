@@ -404,7 +404,7 @@ static int do_scrapec (void)
 
 static void print_help (const char *prog)
 {
-	printf("Dump Torrent Information:\n"
+	printf("Dump Torrent v1.3 Information:\n"
 			"Usage: %s [-t|-f field|-b|-v|-d|-s] [-w timeout] [-] files.torrent ...\n"
 			"       %s [-w timeout] -scrape url infohash\n"
 			"Options:\n"
