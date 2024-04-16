@@ -55,12 +55,11 @@ jobs:
     - name: Zip
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
-        if ($env:RUNNER_OS -eq "Windows") {
+        if [ "$RUNNER_OS" == "Windows" ]; then
           7z a ${{ matrix.zipname }} Release/dumptorrent.exe Release/scrapec.exe
-        }
-        else {
+        else
           tar -cvzf ${{ matrix.zipname }} dumptorrent scrapec
-        }
+        fi
 
     - name: Upload
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
