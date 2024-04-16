@@ -50,12 +50,15 @@ jobs:
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Zip
+    - name: Zip Windows
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      - if: matrix.os == 'windows-latest'
-        run: 7z a ${{ matrix.zipname }} Release/dumptorrent.exe Release/scrapec.exe
-      - if: matrix.os == 'ubuntu-latest'
-        run: tar -cvzf ${{ matrix.zipname }} dumptorrent scrapec
+      if: matrix.os == 'windows-latest'
+      run: 7z a ${{ matrix.zipname }} Release/dumptorrent.exe Release/scrapec.exe
+
+    - name: Zip Linux
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      if: matrix.os == 'ubuntu-latest'
+      run: tar -cvzf ${{ matrix.zipname }} dumptorrent scrapec
 
     - name: Upload
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
