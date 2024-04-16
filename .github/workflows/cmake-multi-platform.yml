@@ -16,15 +16,18 @@ jobs:
       fail-fast: true
 
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
         build_type: [Release]
         include:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+            zipcontent: "dumptorrent.exe scrapec.exe"
+            zipname: dumptorrent_windows_amd64.zip
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
+            zipcontent: "dumptorrent scrapec"
             zipname: dumptorrent_linux_amd64.zip
 
     steps:
@@ -51,8 +54,10 @@ jobs:
 
     - name: Zip
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: zip -r ${{ matrix.zipname }} *
+      run: zip -r ${{ matrix.zipname }} ${{ matrix.zipcontent }}
 
     - name: Upload
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: gh release upload ${{github.event.release.tag_name}} ${{ matrix.zipname }}
+      env:
+        GITHUB_TOKEN: ${{ github.TOKEN }}
