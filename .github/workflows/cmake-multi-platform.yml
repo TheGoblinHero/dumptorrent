@@ -28,7 +28,7 @@ jobs:
             c_compiler: gcc
             cpp_compiler: g++
             zipcontent: "dumptorrent scrapec"
-            zipname: dumptorrent_linux_amd64.zip
+            zipname: dumptorrent_linux_amd64.tar.gz
 
     steps:
     - uses: actions/checkout@v3
@@ -54,7 +54,13 @@ jobs:
 
     - name: Zip
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: zip -r ${{ matrix.zipname }} ${{ matrix.zipcontent }}
+      run: |
+        if ($env:RUNNER_OS -eq "Windows") {
+          7z a ${{ matrix.zipname }} Release/dumptorrent.exe Release/scrapec.exe
+        }
+        else {
+          tar -cvzf ${{ matrix.zipname }} dumptorrent scrapec
+        }
 
     - name: Upload
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
