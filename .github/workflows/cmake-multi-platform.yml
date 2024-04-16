@@ -52,7 +52,7 @@ jobs:
     - name: Zip Windows
       working-directory: ${{ steps.strings.outputs.build-output-dir }}/Release
       if: matrix.os == 'windows-latest'
-      run: 7z a ${{ matrix.zipname }} dumptorrent.exe scrapec.exe
+      run: 7z a ../${{ matrix.zipname }} dumptorrent.exe scrapec.exe
 
     - name: Zip Linux
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
