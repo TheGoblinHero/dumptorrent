@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdint.h>
-
+#include <inttypes.h>
 #include "common.h"
 #include "benc.h"
 #include "scrapec.h"
@@ -30,7 +30,6 @@ static char *human_readable_number (uint64_t n)
 {
 	static char buff[51];
 	const char *suffix[] = {"B", "K", "M", "G", "T"};
-	int length = sizeof(suffix) / sizeof(suffix[0]);
 	double bytes = (double)n;
 	int i = 0;
 
@@ -39,7 +38,7 @@ static char *human_readable_number (uint64_t n)
       i++;
 	}
 
-	snprintf(buff, 50, "%llu (%.3g%s)", n, bytes, suffix[i]);
+	snprintf(buff, 50, "%"PRIu64" (%.3g%s)", n, bytes, suffix[i]);
 	return buff;
 }
 
